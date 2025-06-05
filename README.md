@@ -10,13 +10,13 @@ GEMM is widely used in scientific computing, machine learning, and graphics due 
 
 For cosistency inside the document and for a easier understanding we now define the two matrices.
 
-*A* = $\begin{bmatrix} N \times M \end{bmatrix}$
+$$A = \begin{bmatrix} N \times M \end{bmatrix}$$
 
-*B* = $\begin{bmatrix} M \\ \times \\ P \end{bmatrix}$
+$$B = \begin{bmatrix} M \\ \times \\ P \end{bmatrix}$$
 
 And the operation performed.
 
-*C* = *AB* = $\begin{bmatrix} N \times M \end{bmatrix} \cdot \begin{bmatrix} M \\ \times \\ P \end{bmatrix}$
+$$C = AB = \begin{bmatrix} N \times M \end{bmatrix} \cdot \begin{bmatrix} M \\ \times \\ P \end{bmatrix}$$
 
 #
 
