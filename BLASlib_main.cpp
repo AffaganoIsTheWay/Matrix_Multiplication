@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <cblas.h>
+#include <mkl.h>
 #include <omp.h>
 #include <fstream>
 
@@ -42,14 +42,14 @@ int main(int argc, const char* argv[]) {
             double start_time = omp_get_wtime();
 
             cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                matrix_dimension[i][1], matrix_dimension[i][0],
-                matrix_dimension[i][2], 1.0, A, matrix_dimension[i][2],
-                B, matrix_dimension[i][0], 0.0, C_parallel, matrix_dimension[i][0]);
+                matrix_dimension[i][0], matrix_dimension[i][2],
+                matrix_dimension[i][1], 1.0, A, matrix_dimension[i][1],
+                B, matrix_dimension[i][2], 0.0, C, matrix_dimension[i][2]);
 
             double end_time = omp_get_wtime();
             double duration = (end_time - start_time);
 
-            ResultFile << omp_get_max_threads() << "," <<
+            ResultFile << mkl_get_max_threads() << "," <<
                           matrix_dimension[i][0]  << "," <<
                           matrix_dimension[i][1] << "," <<
                           matrix_dimension[i][2] << "," <<
@@ -59,8 +59,7 @@ int main(int argc, const char* argv[]) {
         // Cleanup memory
         delete[] A;
         delete[] B;
-        delete[] C_serial;
-        delete[] C_parallel;
+        delete[] C;
     }
 
     ResultFile.close();

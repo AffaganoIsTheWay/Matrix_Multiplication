@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
             MPI_Barrier(MPI_COMM_WORLD);
 
             MPI_Gather(C_local, rows_per_proc * matrix_dimension[i][2], MPI_INT,
-                       C_parallel, rows_per_proc * matrix_dimension[i][2], MPI_INT,
+                       C, rows_per_proc * matrix_dimension[i][2], MPI_INT,
                        0, MPI_COMM_WORLD);
 
             double end_time = MPI_Wtime();

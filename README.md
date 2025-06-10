@@ -6,26 +6,18 @@
 
 GEMM is widely used in scientific computing, machine learning, and graphics due to its efficiency and optimization on various hardware architectures.
 
-#
+For consistency throughout the document and to facilitate understanding, we define the two matrices as follows:
 
-For cosistency inside the document and for a easier understanding we now define the two matrices.
+$$A = \begin{bmatrix} N \times M \end{bmatrix}$$  
+$$B = \begin{bmatrix} M \times P \end{bmatrix}$$  
+$$C = AB = \begin{bmatrix} N \times M \end{bmatrix} \cdot \begin{bmatrix} M \times P \end{bmatrix}$$
 
-$$A = \begin{bmatrix} N \times M \end{bmatrix}$$
-
-$$B = \begin{bmatrix} M \\ \times \\ P \end{bmatrix}$$
-
-And the operation performed.
-
-$$C = AB = \begin{bmatrix} N \times M \end{bmatrix} \cdot \begin{bmatrix} M \\ \times \\ P \end{bmatrix}$$
-
-#
-
-The performances of every method are mesured by this two key factors:
+The performance of each method is measured by two key factors:
 
 - **Execution Time**: Time taken to complete the matrix multiplication.
-- **Memory Bandwidth**: The efficiency of memory usage during the multiplication.
+- **Memory Bandwidth**: Efficiency of memory usage during the multiplication.
 
-#
+---
 
 To start clone the repository:
 
@@ -53,7 +45,10 @@ The tests in this repository were executed on the following machine architecture
 
 - **Processor**: Intel(R) Xeon(R) Gold 6252N CPU @ 2.30GHz (96 cores, 96 threads)
 - **Architecture**: x86_64
-- **RAM**: 8 GB
+- **RAM**: 16 GB
+
+---
+
 
 ## Sequential Implementation
 
@@ -73,8 +68,10 @@ Then run the bash script:
 sh sequential_moltiplication.sh <number of iteration> <N> <M> <P>
 ```
 
-- **number of itaration** is how many times the test will be performed.
-- **N, M and P** are the sizes of the matrices (if 10, 15 and 20 the matrices will be *A*=10x15 and *B**A*=10x15 and *B*=15x20).
+Where:
+
+- `<number of iterations>`: Number of times the test will be run.
+- `<N>`, `<M>`, `<P>`: Dimensions of the matrices. For example, if `N=10`, `M=15`, `P=20`, then matrix *A* is 10×15 and *B* is 15×20.
 
 Here a possible call:
 
@@ -82,17 +79,13 @@ Here a possible call:
 sh sequential_moltiplication.sh 10 1024 1024 1024
 ```
 
+---
+
 ## OpenMP
 
-OpenMP is a popular API for parallel programming in C, C++, and Fortran. It enables easy parallelization of loops and sections of code by adding simple compiler directives.
-
-In this section different OpenMP implementation are compared in order to find the best solution.
-
-#
+**OpenMP** is a popular API for parallel programming in C, C++, and Fortran. It enables easy parallelization of loops and sections of code by adding simple compiler directives.
 
 In this section we will mesure the perfomances of different **OpenMP** implementation methods.
-
-The **Execution Time** and **Memory Bandwidth** are computed for both the sequential and the parallel methods and displayed.
 
 First, navigate to the directory
 
@@ -100,20 +93,23 @@ First, navigate to the directory
 cd OpenMP/
 ```
 
-Here we can run each of the implementation on its own,
+You can run each implementation individually:
 
 ```bash
-sh Implementation_script.sh <number of iteration> <number of threads> <N> <M> <P>
+sh Implementation_script.sh <number of iterations> <number of threads> <N> <M> <P>
 ```
 
-Or we can all of them together with:
+Or run all of them together:
 
 ```bash
-sh all_compile_script.sh <number of iteration> <number of threads> <N> <M> <P>
+sh all_compile_script.sh <number of iterations> <number of threads> <N> <M> <P>
 ```
-- **number of itaration** is how many times the test will be performed.
-- **number of threads** is with how many threads you want to run the simulation with.
-- **N, M and P** are the sizes of the matrices (if 10, 15 and 20 the matrices will be *A*=10x15 and *B**A*=10x15 and *B*=15x20).
+
+Where:
+
+- `<number of iterations>`: Number of test repetitions.
+- `<number of threads>`: Number of threads to use for parallel execution.
+- `<N>`, `<M>`, `<P>`: Matrix dimensions.
 
 Here a possible call:
 
@@ -121,15 +117,17 @@ Here a possible call:
 sh all_compile_script.sh 10 4 1024 1024 1024
 ```
 
+The **Execution Time** and **Memory Bandwidth** are computed for both the sequential and the parallel methods and displayed.
+
+---
+
 ## BLAS Library
 
-Due to the vast usage of the matrix multiplication in varius filds, there exist some library that contains an already hight optimized implementation.
+Due to the widespread use of matrix multiplication in various fields, many libraries offer highly optimized implementations.
 
 These optimizations include CPU-specific vector instructions (e.g., AVX, SSE), cache blocking to improve memory access patterns, multi-threading to utilize multiple cores, and algorithmic tuning to reduce computational overhead.
 
-For this project I implemented the **OpenBlas** and the **Intel MKL** libraries
-
-#
+This project implemented the **OpenBlas** and the **Intel MKL** libraries
 
 Navigate to the folder
 
@@ -137,29 +135,33 @@ Navigate to the folder
 cd BLAS\ library/
 ```
 
-Here we can run the implementations:
+Run the implementation:
 
 ```bash
-sh Implementation_script.sh <number of iteration> <number of threads> <N> <M> <P>
+sh Implementation_script.sh <number of iterations> <number of threads> <N> <M> <P>
 ```
 
-- **number of itaration** is how many times the test will be performed.
-- **number of threads** is with how many threads you want to run the simulation with.
-- **N, M and P** are the sizes of the matrices (if 10, 15 and 20 the matrices will be *A*=10x15 and *B**A*=10x15 and *B*=15x20).
+Where:
 
-### ATTENTION
+- `<number of iterations>`: Number of test repetitions.
+- `<number of threads>`: Number of threads for parallel execution.
+- `<N>`, `<M>`, `<P>`: Matrix dimensions.
 
-Both this libraries require to be installed beforhand. In particular for the **Intel MKL** the ```IntelBLAS_compile_script.sh``` must be modified in order to match your *include* and *lib* directory paths
+Note: **Memory Bandwidth** is not measured in this section because the actual data access patterns are hidden within the library implementation.
+
+### ⚠️ ATTENTION
+
+Both libraries must be installed beforhand. In particular for the **Intel MKL** the `IntelBLAS_compile_script.sh` must be modified in order to match your `include` and `lib` directory paths
 
 [Intel MKL](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-documentation.html)
 
 [OpenBlas](http://www.openmathlib.org/OpenBLAS/)
 
+---
+
 ## MPI
 
 **MPI (Message Passing Interface)** is a standardized library used for writing parallel programs that run on multiple processors or computers. It allows these separate processes to communicate by sending and receiving messages, coordinating their work to solve large problems more efficiently. MPI is widely used in high-performance computing to build applications that can scale across clusters and supercomputers.
-
-#
 
 Navigato to the folder
 
@@ -167,23 +169,52 @@ Navigato to the folder
 cd MPI/
 ```
 
-Here we can run each of the implementation on its own,
+Run individual implementations:
 
 ```bash
-sh Implementation_script.sh <number of iteration> <number of threads> <N> <M> <P>
+sh Implementation_script.sh <number of iterations> <number of threads> <N> <M> <P>
 ```
 
-Or we can all of them together with:
+Or run all implementations at once:
 
 ```bash
-sh all_compile_script.sh <number of iteration> <number of threads> <N> <M> <P>
+sh all_compile_script.sh <number of iterations> <number of threads> <N> <M> <P>
 ```
-- **number of itaration** is how many times the test will be performed.
-- **number of threads** is with how many threads you want to run the simulation with.
-- **N, M and P** are the sizes of the matrices (if 10, 15 and 20 the matrices will be *A*=10x15 and *B**A*=10x15 and *B*=15x20).
+
+Parameters:
+
+- `<number of iterations>`: Number of test repetitions.
+- `<number of threads>`: Number of threads to run the simulation.
+- `<N>`, `<M>`, `<P>`: Matrix dimensions.
 
 Here a possible call:
 
 ```bash
 sh all_compile_script.sh 10 4 1024 1024 1024
+```
+
+The **Execution Time** and **Memory Bandwidth** are computed for both the sequential and the parallel methods and displayed.
+
+## Cluster
+
+All main files perform multiplications between square matrices and tall/skinny matrices for multiple dimension sets (defined inside the files), each repeated 10 times. The results are saved in CSV files.
+
+The `main_script.pbs` first of all ensure that all the required module are loaded and then call all the main files with different number of threads: `{1,2,4,8,16,32,64}`.
+
+In order to run it, first, copy ```OMP_main.cpp```, ```MPI_ main.cpp```, ```BLASlib_main.cpp``` and ```main_script.pbs``` in the cluster. Open ```main_script.pbs``` and modify the working directory in to match yours. Then submit the job:
+
+```bash
+qsub main_script.pbs
+```
+
+A file named ```OMP_result.csv```, ```MPI_result.csv``` and ```BLASlib_result.csv``` will be created, in which all the result will be saved.
+
+### ⚠️ ATTENTION
+
+```main_script.pbs``` may require to be converted to unix format.
+
+In order to do so, run the following command on the cluster:
+
+```bash
+dos2unix main_script.pbs
 ```

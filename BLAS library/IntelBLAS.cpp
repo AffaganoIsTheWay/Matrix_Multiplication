@@ -63,15 +63,12 @@ int main(int argc, const char* argv[]) {
     double start_parallel = omp_get_wtime();
 
     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                M, N, P, 1.0, A, P, B, N, 0.0, C_parallel, N);
+                N, P, M, 1.0, A, M, B, P, 0.0, C_parallel, P);
     
                 double end_parallel = omp_get_wtime();
     double duration_parallel = (end_parallel - start_parallel);
-    double data_transferred_parallel = ((2.0 * (double)((double)N * (double)M * (double)P)) + (double)(N * P)) * sizeof(int);
-    double bandwidth_parallel = data_transferred_parallel / (duration_parallel * 1e9);
 
     cout << "Time taken by IntelMKL: " << duration_parallel << " seconds" << endl;
-    cout << "Effective Parallel Bandwidth: " << bandwidth_parallel << " GB/s" << endl << endl;
 
     cout << "Check multiplied Matrix:" << check_transpose(C_serial, C_parallel, N, P) << endl;
 

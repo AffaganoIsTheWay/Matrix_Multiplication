@@ -4,14 +4,14 @@
 # Queue name
 #PBS -q short_cpuQ
 # Set the maximum wall time
-#PBS -l walltime=3:00:00
+#PBS -l walltime=5:00:00
 # Number of nodes, cpus, mpi processors and amount of memory
 #PBS -l select=1:ncpus=64:ompthreads=64:mem=16gb
 
 # Modules for C++
 module load gcc91
 module load mpich-3.2.1--gcc-9.1.0
-module load OpenBLAS-0.3.7
+module load Intel_oneAPI_Toolkit_2021.2
 
 # Select the working directory
 cd /home/giovanni.vitiello/Blass_Gemm/
@@ -24,11 +24,11 @@ echo "threads,N,M,P,enlapse_time" > BLASlib_result.csv;
 # The code should be compiled before submitting the job
 g++ OMP_main.cpp -fopenmp -O2 -o omp_main
 mpicxx MPI_main.cpp -O2 -o mpi_main
-g++ BLASlib_main.cpp -lopenblas -fopenmp -O2 -o blaslib_main
+g++ -L/opt/intel/mkl/lib/intel64 -I/opt/intel/mkl/include BLASlib_main.cpp -o blaslib_main -fopenmp -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -lpthread -lm -ldl
 
 # Run code
 for i in  {1,2,4,8,16,32,64} ; do
     export OMP_NUM_THREADS="$i"; ./omp_main
-    export OPENBLAS_NUM_THREADS="$i"; ./blaslib_main
+    export MKL_NUM_THREADS="$i"; ./blaslib_main
     mpirun -np "$i" ./mpi_main
 done
