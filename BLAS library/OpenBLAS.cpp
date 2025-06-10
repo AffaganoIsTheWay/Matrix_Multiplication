@@ -70,7 +70,7 @@ int main(int argc, const char* argv[]) {
     double data_transferred_parallel = ((2.0 * (double)((double)N * (double)M * (double)P)) + (double)(N * P)) * sizeof(int);
     double bandwidth_parallel = data_transferred_parallel / (duration_parallel * 1e9);
 
-    cout << "Time taken by parallel Outer Loop: " << duration_parallel << " seconds" << endl;
+    cout << "Time taken by OpenBLAS: " << duration_parallel << " seconds" << endl;
     cout << "Effective Parallel Bandwidth: " << bandwidth_parallel << " GB/s" << endl << endl;
 
     cout << "Check multiplied Matrix:" << check_transpose(C_serial, C_parallel, N, P) << endl;

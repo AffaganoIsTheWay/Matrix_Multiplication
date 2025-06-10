@@ -7,7 +7,7 @@ if [ $# -lt 5 ]; then
 fi
 
 # Compile the C++ file
-g++ -o block_level  block_level.cpp -fopenmp
+g++ -o block_level  block_level.cpp -fopenmp -O3
 
 # Check if the compilation was successful
 if [ $? -ne 0 ]; then

@@ -70,7 +70,7 @@ int main(int argc, const char* argv[]) {
         C_parallel[i] = 0;
     }
 
-    double start_serial = omp_get_wtime();
+    /* double start_serial = omp_get_wtime();
 
     MatrixMultiplication(A, B, C_serial, N, M, P);
 
@@ -80,7 +80,7 @@ int main(int argc, const char* argv[]) {
     double bandwidth_serial = data_transferred_serial / (duration_serial * 1e9);
 
     cout << "Time taken by serial: " << duration_serial << " seconds" << endl;
-    cout << "Effective Serial Bandwidth: " << bandwidth_serial << " GB/s" << endl << endl;
+    cout << "Effective Serial Bandwidth: " << bandwidth_serial << " GB/s" << endl << endl; */
 
     double start_parallel = omp_get_wtime();
 

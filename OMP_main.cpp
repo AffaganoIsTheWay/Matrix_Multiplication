@@ -6,17 +6,6 @@
 
 using namespace std;
 
-void MatrixMultiplication(int* A, int* B, int* C, int n, int m, int p) {
-    // Multiply matrices
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < p; ++j) {
-            for (int k = 0; k < m; ++k) {
-                C[i * p + j] += A[i * m + k] * B[k * p + j];
-            }
-        }
-    }
-}
-
 void MatrixMultiplicationOMP(int* A, int* B, int* C, int n, int m, int p, int blockSize) {
     // Multiply matrices block parallelization
     #pragma omp parallel for collapse(2)
@@ -49,17 +38,15 @@ int main(int argc, const char *argv[]){
                                  {1024, 1024, 1024},
                                  {2048, 2048, 2048},
                                  {4096, 4096, 4096},
-                                 {8192, 8192, 8192},
                                  {2048, 128, 1024},
                                  {8192, 256, 128},
                                  {8192, 1024, 256}};
 
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < 9; i++){
         // Inizialization matrix
         int *A = new int[matrix_dimension[i][0] * matrix_dimension[i][1]];
         int *B = new int[matrix_dimension[i][1] * matrix_dimension[i][2]];
-        int *C_serial = new int[matrix_dimension[i][0] * matrix_dimension[i][2]];
-        int *C_parallel = new int[matrix_dimension[i][0] * matrix_dimension[i][2]];
+        int *C = new int[matrix_dimension[i][0] * matrix_dimension[i][2]];
         int blockSize = 64;
 
         for (int j = 0; j < 10; j++){
@@ -71,38 +58,27 @@ int main(int argc, const char *argv[]){
             for (int k = 0; k < matrix_dimension[i][1] * matrix_dimension[i][2]; ++k)
                 B[k] = rand() % 100 + 1;
 
-            for (int k = 0; k < matrix_dimension[i][0] * matrix_dimension[i][2]; ++k){
-                C_serial[k] = 0;
-                C_parallel[k] = 0;
-            }
+            for (int k = 0; k < matrix_dimension[i][0] * matrix_dimension[i][2]; ++k)
+                C[k] = 0;
 
-            double start_serial = omp_get_wtime();
+            double start_time = omp_get_wtime();
 
-            MatrixMultiplication(A, B, C_serial, matrix_dimension[i][0], matrix_dimension[i][1], matrix_dimension[i][2]);
+            MatrixMultiplicationOMP(A, B, C, matrix_dimension[i][0], matrix_dimension[i][1], matrix_dimension[i][2], blockSize);
 
-            double end_serial = omp_get_wtime();
-            double duration_serial = (end_serial - start_serial);
-
-            double start_parallel = omp_get_wtime();
-
-            MatrixMultiplicationOMP(A, B, C_parallel, matrix_dimension[i][0], matrix_dimension[i][1], matrix_dimension[i][2], blockSize);
-
-            double end_parallel = omp_get_wtime();
-            double duration_parallel = (end_parallel - start_parallel);
+            double end_time = omp_get_wtime();
+            double duration = (end_time - start_time);
 
             ResultFile << omp_get_max_threads() << "," <<
                           matrix_dimension[i][0]  << "," <<
                           matrix_dimension[i][1] << "," <<
                           matrix_dimension[i][2] << "," <<
-                          duration_serial << "," <<
-                          duration_parallel << endl;
+                          duration << endl;
         }
 
         // Cleanup memory
         delete[] A;
         delete[] B;
-        delete[] C_serial;
-        delete[] C_parallel;
+        delete[] C;
     }
 
     ResultFile.close();
