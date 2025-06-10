@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]) {
     int* B = new int[M * P];
     int* C_serial = new int[N * P];
     int* C_parallel = new int[N * P];
-    int blockSize = 32;
+    int blockSize = 64;
 
     srand(time(NULL));
 
