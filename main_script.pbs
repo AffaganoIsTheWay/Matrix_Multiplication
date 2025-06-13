@@ -17,9 +17,9 @@ module load Intel_oneAPI_Toolkit_2021.2
 cd /home/giovanni.vitiello/Blass_Gemm/
 
 # Inizialization of CSV
-echo "threads,N,M,P,enlapse_time" > OMP_result.csv;
-echo "threads,N,M,P,enlapse_time" > MPI_result.csv;
-echo "threads,N,M,P,enlapse_time" > BLASlib_result.csv;
+echo "threads,N,M,P,elapse_time" > OMP_result.csv;
+echo "threads,N,M,P,elapse_time" > MPI_result.csv;
+echo "threads,N,M,P,elapse_time" > BLASlib_result.csv;
 
 # The code should be compiled before submitting the job
 g++ OMP_main.cpp -fopenmp -O2 -o omp_main
