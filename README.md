@@ -49,6 +49,13 @@ The tests in this repository were executed on the following machine architecture
 
 ---
 
+#### Modules
+
+- **Compiler**: gcc 9.1.0 (gcc91)
+- **MPI Implementation**: MPICH 3.2.1 (mpich-3.2.1--gcc-9.1.0)
+- **MKL Implementation**: Intel oneAPI Toolkit 2021.2 (Intel_oneAPI_Toolkit_2021.2)
+
+---
 
 ## Sequential Implementation
 
